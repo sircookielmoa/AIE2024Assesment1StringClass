@@ -47,21 +47,57 @@ char& String::CharacterAt(size_t _index)
 	return str[_index];
 }
 
+const char& String::CharacterAt(size_t _index) const
+{
+	if (_index > Length())
+	{
+		_index = Length();
+	}
+
+	return str[_index];
+
+}
+
 const char* String::CStr() const
 {
 	return str;
 }
 
+bool String::EqualTo(const String& _other) const
+{
+	if (strlen(_other.CStr()) != strlen(str))
+	{
+		return false;
+	}
+	
+	for (int i = 0; i < Length(); ++i)
+	{
+		if (std::strcmp (_other.CStr(), str) == 0)
+		{
+			return true;
+		}
+
+	}
+	return false;
+}
+
 String& String::ToLower()
 {
-	std::tolower;
+	for(int i = 0; i < strlen(str); ++i)
+	{
+		str[i] = std::tolower(str[i]);
+		
+	}
 
 	return *this;
 }
 
 String& String::ToUpper()
 {
-	std::toupper;
+	for (int i = 0; i < strlen(str); ++i)
+	{
+		str[i] = std::toupper(str[i]);
+	}
 
 	return* this;
 }
@@ -71,3 +107,26 @@ String& String::WriteToConsole()
 	std::cout << str << std::endl;
 	return *this;
 }
+
+//String& String::ReadFromConsole()
+//{
+//	
+//		
+//	char c;
+//
+//	std::cin.get(c);
+//	std::cin.putback(c);
+//
+//	std::streamsize size = std::cin.rdbuf()->in_avail();
+//
+//	char* newTwine = new char[size];
+//	std::cin.readsome(newTwine, size);
+//
+//	newTwine[size - 1] = '\0';
+//	SetTwine(newTwine);
+//
+//	delete[] newTwine;
+//	&std::ostream::flush;
+//
+//	return *this;
+//}
