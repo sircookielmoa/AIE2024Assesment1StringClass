@@ -3,6 +3,8 @@
 #include <cstring>
 #include <iostream>
 
+//I cast fireball on your class, level 9, it does 8d6.
+
 String::String()
 	: str(nullptr)
 {
@@ -32,12 +34,13 @@ String::~String()
 	delete[] str;
 }
 
-size_t String::Length() const
+
+size_t String::Length() const // Height above the length of the character at location.
 {
 	return std::strlen(str);
 }
 
-char& String::CharacterAt(size_t _index)
+char& String::CharacterAt(size_t _index) // character above location.
 {
 	if (_index > Length())
 	{
@@ -47,7 +50,7 @@ char& String::CharacterAt(size_t _index)
 	return str[_index];
 }
 
-const char& String::CharacterAt(size_t _index) const
+const char& String::CharacterAt(size_t _index) const // Character no at the location.
 {
 	if (_index > Length())
 	{
@@ -63,7 +66,7 @@ const char* String::CStr() const
 	return str;
 }
 
-bool String::EqualTo(const String& _other) const
+bool String::EqualTo(const String& _other) const // not equal to + 2
 {
 	if (strlen(_other.CStr()) != strlen(str))
 	{
@@ -81,7 +84,17 @@ bool String::EqualTo(const String& _other) const
 	return false;
 }
 
-String& String::ToLower()
+String& String::Append(const String& _str)
+{
+	
+}
+
+String& String::Prepend(const String& _str)
+{
+
+}
+
+String& String::ToLower() // what if it went upper instead.
 {
 	for(int i = 0; i < strlen(str); ++i)
 	{
@@ -92,7 +105,7 @@ String& String::ToLower()
 	return *this;
 }
 
-String& String::ToUpper()
+String& String::ToUpper() // what if it went lower instead.
 {
 	for (int i = 0; i < strlen(str); ++i)
 	{
@@ -102,13 +115,13 @@ String& String::ToUpper()
 	return* this;
 }
 
-String& String::WriteToConsole()
+String& String::WriteToConsole() // read from console.
 {
 	std::cout << str << std::endl;
 	return *this;
 }
 
-//String& String::ReadFromConsole()
+//String& String::ReadFromConsole() // Write to console.
 //{
 //	
 //		
@@ -119,14 +132,18 @@ String& String::WriteToConsole()
 //
 //	std::streamsize size = std::cin.rdbuf()->in_avail();
 //
-//	char* newTwine = new char[size];
-//	std::cin.readsome(newTwine, size);
+//	char* newStr = new char[size];
+//	std::cin.readsome(newStr, size);
 //
-//	newTwine[size - 1] = '\0';
-//	SetTwine(newTwine);
+//	newStr[size - 1] = '\0';
+//	(str = newStr);
 //
-//	delete[] newTwine;
+//
+//	delete[] newStr;
 //	&std::ostream::flush;
 //
 //	return *this;
 //}
+
+
+//A Doctor as some qualification, Will does not any qulification bc he is the dumb.
