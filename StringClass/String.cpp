@@ -86,12 +86,12 @@ bool String::EqualTo(const String& _other) const // not equal to + 2
 
 String& String::Append(const String& _str)
 {
-	
+	return *this;
 }
 
 String& String::Prepend(const String& _str)
 {
-
+	return *this;
 }
 
 String& String::ToLower() // what if it went upper instead.
@@ -113,6 +113,20 @@ String& String::ToUpper() // what if it went lower instead.
 	}
 
 	return* this;
+}
+
+size_t String::Find(size_t _startIndex, const String& _str)
+{
+	//1. Use strstr to located_str with this string
+	const char* foundPos = std:: strstr(this->str + _startIndex, _str.str);
+	//1a. If nullptr, _str not found
+	if (foundPos == nullptr)
+	{
+		return std::size_t(-1);
+	}
+	//2.
+
+	return size_t(foundPos - this->str);
 }
 
 String& String::WriteToConsole() // read from console.
