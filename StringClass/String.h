@@ -3,9 +3,7 @@
 class String
 {
 private:
-	char null;
 	char* str;
-	int length;
 
 public:
 	String();

@@ -24,7 +24,7 @@ String::String(const char* _str)
 
 //copy constructor
 String::String(const String& _other)
-	: str(nullptr)
+	: String(_other.str)
 {
 
 }
@@ -84,13 +84,27 @@ bool String::EqualTo(const String& _other) const // not equal to + 2
 	return false;
 }
 
-String& String::Append(const String& _str)
+String& String::Append(const String& suffix)
 {
+	int newLength = (Length() + suffix.Length());
+	char* tempString = new char [newLength + 1];
+	std::strncpy(tempString, str, Length() + 1);
+	//*(tempString + Length()) = 0;
+	std::strncat(tempString, suffix.str, suffix.Length());
+	String::~String();
+	str = tempString;
 	return *this;
 }
 
-String& String::Prepend(const String& _str)
+String& String::Prepend(const String& prefix)
 {
+	int newLength = (Length() + prefix.Length());
+	char* tempString = new char[newLength + 1];
+	std::strncpy(tempString, prefix.str, prefix.Length() + 1);
+	//*(tempString + Length()) = 0;
+	std::strncat(tempString, str, Length());
+	String::~String();
+	str = tempString;
 	return *this;
 }
 
@@ -115,6 +129,11 @@ String& String::ToUpper() // what if it went lower instead.
 	return* this;
 }
 
+size_t String::Find(const String& _str)
+{
+	return size_t();
+}
+
 size_t String::Find(size_t _startIndex, const String& _str)
 {
 	//1. Use strstr to located_str with this string
@@ -135,29 +154,31 @@ String& String::WriteToConsole() // read from console.
 	return *this;
 }
 
-//String& String::ReadFromConsole() // Write to console.
-//{
-//	
-//		
-//	char c;
-//
-//	std::cin.get(c);
-//	std::cin.putback(c);
-//
-//	std::streamsize size = std::cin.rdbuf()->in_avail();
-//
-//	char* newStr = new char[size];
-//	std::cin.readsome(newStr, size);
-//
-//	newStr[size - 1] = '\0';
-//	(str = newStr);
-//
-//
-//	delete[] newStr;
-//	&std::ostream::flush;
-//
-//	return *this;
-//}
+String& String::ReadFromConsole() // Write to console.
+{
+	std::istream::sentry fetcher(std::cin);
+
+	if (!fetcher)
+	{
+		std::cin.clear();
+		std::cin.ignore(std::cin.rdbuf()->in_avail());
+		return *this;
+	}
+
+	std::streamsize bufferedText = std::cin.rdbuf()->in_avail();
+	char* newStr = new char[bufferedText];
+
+	std::cin.rdbuf()->sgetn(newStr, bufferedText);
+	newStr[bufferedText - 1] = '\0';
+
+	delete[] this->str;
+	this->str = newStr;
+
+	return *this;
+		
+}
+
+
 
 
 //A Doctor as some qualification, Will does not any qulification bc he is the dumb.

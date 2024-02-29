@@ -10,15 +10,25 @@ int main()
 	//boom
 		//std::cout << s << std::endl;
 	
-	String s1 = "stinky poopy";
-	String s2 = "poopy";
+	String s1 = "";
+	String s2 = "";
+	
+	s1.ReadFromConsole();
+	s2.ReadFromConsole();
 
-	std::size_t everyonePos = s1.Find(0, "stinky");
+	s1.Append(s2);
+	s1.ToLower();
+	
+	s1.WriteToConsole();
+
+	std::cout << s1.CharacterAt(12) << std::endl;
+
+	//std::size_t everyonePos = s1.Find(0, "stinky");
 	//s2.ToLower();
 	//s1.Append(s2);
 
-	std::cout << s1.CStr() << std::endl;
-	std::cout << everyonePos << std::endl;
+	//std::cout << s1.CStr() << std::endl;
+	//std::cout << everyonePos << std::endl;
 
 	//s.ReadFromConsole();
 
