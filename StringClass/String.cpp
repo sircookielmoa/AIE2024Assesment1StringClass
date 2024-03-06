@@ -1,7 +1,10 @@
+
 #include "String.h"
+
 #include <cctype>
 #include <cstring>
 #include <iostream>
+#include <windows.h>
 
 //I cast fireball on your class, level 9, it does 8d6.
 
@@ -16,14 +19,15 @@ String::String(const char* _str)
 {
 	//1. Figure out how much text _str is pointing at
 	std::size_t _strLen = std::strlen(_str) + 1;
+
 	//2. Make str point at an array big enough to fit the text in _str
 	str = new char[_strLen + 1];
 	//3. Copy the text from _str to str.
 	std::strncpy(str, _str, _strLen);
 }
 
-//copy constructor
-String::String(const String& _other)
+
+String::String(const String& _other)			//copy constructor
 	: String(_other.str)
 {
 
@@ -35,13 +39,13 @@ String::~String()
 }
 
 
-size_t String::Length() const // Height above the length of the character at location.
+size_t String::Length() const					//Returns the length of the string
 {
 	return std::strlen(str);
 }
 
-char& String::CharacterAt(size_t _index) // character above location.
-{
+char& String::CharacterAt(size_t _index)		//Returns the character at a requested location within an array
+{												//eg. "Hello world" CharacterAt 3 = 'l'
 	if (_index > Length())
 	{
 		_index = Length();
@@ -50,7 +54,7 @@ char& String::CharacterAt(size_t _index) // character above location.
 	return str[_index];
 }
 
-const char& String::CharacterAt(size_t _index) const // Character no at the location.
+const char& String::CharacterAt(size_t _index) const //Character at location but constant?
 {
 	if (_index > Length())
 	{
@@ -61,14 +65,14 @@ const char& String::CharacterAt(size_t _index) const // Character no at the loca
 
 }
 
-const char* String::CStr() const
+const char* String::CStr() const				//Prints the value of string (std::cout << "string"; )
 {
 	return str;
 }
 
-bool String::EqualTo(const String& _other) const // not equal to + 2
-{
-	if (strlen(_other.CStr()) != strlen(str))
+bool String::EqualTo(const String& _other) const//Determines if one string input is identical to another string.
+{												//First checks the length of the two strings if they match, and if so,
+	if (strlen(_other.CStr()) != strlen(str))	//checks if all the characters in the string array match, prints true if true.
 	{
 		return false;
 	}
@@ -178,6 +182,94 @@ String& String::ReadFromConsole() // Write to console.
 		
 }
 
+size_t String::CountMatches(size_t _startIndex, const String& _find) const
+{
+	size_t findLength = _find.Length();
+	size_t count = 0;
+	//This loop goes through each occurrence of the string _find and counts them.
+	for (const char* next = std::strstr(this->str + _startIndex, _find.str);
+		next != nullptr;
+		next = std::strstr(next, _find.str))
+	{
+		++count;
+		next += findLength;
+	}
+	return count;
+}
+
+bool String::operator==(const String& _other)
+{
+	return EqualTo(_other);
+}
+
+bool String::operator!=(const String& _other)
+{
+	return !EqualTo(_other);
+}
+
+String& String::operator=(const String& _str)
+{
+	delete[] str;
+	std::size_t _strLen = std::strlen(_str.str) + 1;
+	str = new char[_strLen + 1];
+	std::strncpy(str, _str.str, _strLen);
+	return *this;
+}
+
+char& String::operator[](size_t _index)
+{
+	return str[_index];
+}
+
+const char& String::operator[](size_t _index) const
+{
+	return str[_index];
+}
+
+String& String::Replace(const String& _find, const String& _replace)
+{
+	//If _find doesn't occur anywhere in the string, of if _find is empty,
+	// nothing has to change.
+	const char* nextOccurrence = std::strstr(this->str, _find.str);
+	if (nextOccurrence == nullptr || _find.Length() == 0)
+	{
+		return *this;
+	}
+	size_t findLength = _find.Length();
+	size_t replaceLength = _replace.Length();
+	//Finds and counts all occurrences of _find in this string.
+	size_t occurrences = 1
+		+ this->CountMatches((nextOccurrence - this->str) + findLength, _find);
+	char* newStr = new char[this->Length()
+		+ (replaceLength - findLength) * occurrences
+		+ 1];
+	//Copies the beginning of this string, up to the first occurrence of _find,
+	//into the new array.
+	std::strncpy(newStr, this->str, (nextOccurrence - this->str));
+	//Adding this null-terminator is necessary for strncat and strcat to work.
+	newStr[nextOccurrence - this->str] = '\0';
+	//Adds the first occurrence of _replace into the new array.
+	std::strncat(newStr, _replace.str, replaceLength);
+	//Loop over each subsequent occurrence of _find in this string.
+	const char* prevOccurrence = nextOccurrence + findLength;
+	while (
+		(nextOccurrence = std::strstr(prevOccurrence, _find.str))
+		!= nullptr)
+	{
+		//Copy all text from this string between the last occurrence of 
+		// _find and the latest occurrence over to the new array.
+		std::strncat(newStr, prevOccurrence, nextOccurrence - prevOccurrence);
+		//Add a copy of _replace to the new array.
+		std::strncat(newStr, _replace.str, replaceLength);
+		prevOccurrence = nextOccurrence + findLength;
+	}
+	//Copy the remainder of the text from this string from the last occurence
+	// of _find to the end of the string over to the new array.
+	std::strcat(newStr, prevOccurrence);
+	delete[] this->str;
+	this->str = newStr;
+	return *this;
+}
 
 
 

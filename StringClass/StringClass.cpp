@@ -1,39 +1,35 @@
+
 #include "string.h"
 
 #include <iostream>
+#include "Windows.h"
 
 
 
 int main()
 	{
+		SetConsoleTitleA("Ghost House");
 		//std::string s = "";
 		//std::cout << s << std::endl;
 	
+
 		String s1 = "";
 		String s2 = "";
 		
 		s1.ReadFromConsole();
 		s2.ReadFromConsole();
 		
-		s1.Append(s2);
-		s1.ToLower();
+		//s1.Replace(s1, s2);
+		//s1.ToLower();
 		
-		s1.WriteToConsole();
+		s1.Append(s2).CStr();
 		
-		//std::cout << s1.CharacterAt(12) << std::endl;
 
-		//std::size_t everyonePos = s1.Find(0, "stinky");
-		s2.ToLower();
-		s1.Append(s2);
+		//s1.ReadFromConsole();
 
-		std::cout << s1.CStr() << std::endl;
-		//std::cout << everyonePos << std::endl;
-
-		s1.ReadFromConsole();
-
-		s1.WriteToConsole();
-		s2.WriteToConsole();
-		s1.ToUpper();
+		//s1.WriteToConsole();
+		//s2.WriteToConsole();
+		//s1.ToUpper();
 
 		//std::cout << pageBreak.CStr() << std::endl;
 

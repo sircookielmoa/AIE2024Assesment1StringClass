@@ -36,6 +36,9 @@ public:
 	String& ReadFromConsole();
 	String& WriteToConsole();
 
+	size_t CountMatches(size_t _startIndex, const String& _find) const;
+
+
 public:
 	bool operator==(const String& _other);
 	bool operator!=(const String& _other);
