@@ -28,20 +28,21 @@ public:
 	String& ToLower();
 	String& ToUpper();
 
-	size_t Find(const String& _str);
-	size_t Find(size_t _startIndex, const String& _str);
+	size_t Find(const String& _str) const;
+	size_t Find(size_t _startIndex, const String& _str) const;
 
 	String& Replace(const String& _find, const String& _replace);
 
 	String& ReadFromConsole();
-	String& WriteToConsole();
+	const String& WriteToConsole() const;
 
 	size_t CountMatches(size_t _startIndex, const String& _find) const;
 
 
 public:
-	bool operator==(const String& _other);
-	bool operator!=(const String& _other);
+	bool operator==(const String& _other) const;
+	bool operator!=(const String& _other) const;
+	bool operator<(const String& _other) const;
 
 	String& operator=(const String& _str);
 
