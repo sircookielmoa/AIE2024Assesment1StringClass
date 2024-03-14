@@ -54,7 +54,7 @@ char& String::CharacterAt(size_t _index)				//Returns the character at a request
 	return str[_index];
 }
 
-const char& String::CharacterAt(size_t _index) const	 //Character at location but constant?
+const char& String::CharacterAt(size_t _index) const	//Character at location but constant?
 {
 	if (_index > Length())
 	{
